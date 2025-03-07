@@ -111,30 +111,11 @@ function destroy(req, res) {
     // recuperiamo l'id dall' URL e trasformiamolo in numero
     const id = parseInt(req.params.id)
 
-    // cerchiamo il post tramite id
-    const post = posts.find(post => post.id === id);
-
-    // Facciamo il controllo
-    if (!post) {
-
-        //Imposto lo status 404
-        res.status(404)
-
-        // Restituisco un JSON con le altre informazioni
-        return res.json({
-            error: "Not Found",
-            message: "Post non trovato"
-        })
-    }
-
-    // Rimuoviamo il post dalla pagina
-    posts.splice(posts.indexOf(post), 1);
-
-    // Restituiamo lo status corretto
-    res.sendStatus(204)
-
-    // log di riscontro
-    console.log(posts);
+    //elimino il post dal database
+    connection.query('DELETE FROM posts WHERE id = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to delete post' });
+        res.sendStatus(204)
+    });
 
 }
 
