@@ -4,6 +4,8 @@
   "description": "Esercizio Blog SQL",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
+    "watch": "node --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -1,25 +1,17 @@
-// importo l'array dei post
-const { title } = require("process");
-const posts = require("../data/postData");
+// importo il file di connessione al database
+const connection = require('../data/db');
 
 // index
 function index(req, res) {
 
-    // // inseriamo un errore
-    // throw new Error("Errore di test");
+    // preparo la query
+    const sql = 'SELECT * FROM posts';
 
-    // posts filtrato è uguale ai posts iniziali
-    let filteredPosts = posts;
-
-    // se la richiesta contiene un filtro, allora filtriamo i post per tag
-    if (req.query.tags) {
-        filteredPosts = posts.filter(
-            post => post.tags.some(tag => tag.toLowerCase() === req.query.tags.toLowerCase())
-        );
-    }
-
-    // restituiamo la variabile filteredPosts che potrebbe essere stata filtrata o contenere i posts originali    
-    res.json(filteredPosts);
+    // eseguo la query!
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        res.json(results);
+    });
 }
 
 // show
